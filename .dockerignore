@@ -3,6 +3,8 @@
 .env
 .env.*
 .vscode
+/database
+README
 node_modules
 test.php
 test_user.php

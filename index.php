@@ -1,1 +1,3 @@
-   <?php echo 'Hello from Render!'; ?>
+<?php
+header('Location: /ui/login.php');
+exit;
