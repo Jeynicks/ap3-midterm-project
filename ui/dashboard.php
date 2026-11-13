@@ -19,7 +19,7 @@ $user = $_SESSION['user'];
     <div class="login-panel">
       <div class="panel">
         <h1>Welcome, <?= e($user['full_name']) ?></h1>
-        <p class="sub">Signed in as <?= e($user['username']) ?> (<?= e($user['role_name']) ?>).</p>
+        <p class="sub">Hello <?= e($user['username']) ?> (<?= e($user['role_name']) ?>).</p>
         <form method="post" action="/ui/logout.php">
           <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
           <button class="btn-f1" type="submit">Sign out</button>
