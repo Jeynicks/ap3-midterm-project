@@ -1,6 +1,17 @@
+# Secrets: never commit these
 .env
 .env.*
 !.env.example
+
+# Test pages that expose data
+test_user.php
+
+# Editor and OS files
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
+
+# Dependencies (only matters if you add Composer or npm later)
+vendor/
 node_modules/
-__pycache__/
-.venv/
