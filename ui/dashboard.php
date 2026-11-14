@@ -26,7 +26,10 @@ require __DIR__ . '/../includes/header.php';
 ?>
 <div class="page-head">
   <h1>Dashboard</h1>
-  <span class="text-secondary">Welcome, <?= e($user['full_name']) ?></span>
+  <div class="d-flex align-items-center gap-3">
+    <span class="text-secondary">Welcome, <?= e($user['full_name']) ?></span>
+    <?php if ($href('/ui/reports/index.php')): ?><a class="btn-f1 btn-inline" href="/ui/reports/index.php">View reports</a><?php endif; ?>
+  </div>
 </div>
 
 <div class="row row-cols-2 row-cols-md-3 row-cols-xl-5 g-3 mb-4">

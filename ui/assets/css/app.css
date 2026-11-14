@@ -32,3 +32,16 @@ a.stat-card:hover,a.stat-card:focus-visible{background:#262634;color:#fff;}
 .bar-row{margin-bottom:.9rem;}
 .bar-track{background:var(--carbon);border-radius:2px;height:10px;overflow:hidden;margin-top:.3rem;}
 .bar-fill{background:var(--red);height:100%;}
+
+/* Reports */
+.f1 .nav-pills .nav-link{color:#fff;font-weight:600;border-radius:3px;}
+.f1 .nav-pills .nav-link:hover{color:var(--lit);}
+.f1 .nav-pills .nav-link.active{background:var(--red);color:#fff;}
+.table-f1 tfoot td{border-top:2px solid var(--red);}
+@media print{
+  .nav-f1,.flag,.no-print{display:none!important;}
+  body.f1{background:#fff!important;color:#000!important;}
+  .panel-lite{background:#fff!important;color:#000!important;padding:0;}
+  .panel-lite .text-secondary{color:#444!important;}
+  .table-f1{--bs-table-bg:#fff;--bs-table-color:#000;--bs-table-striped-bg:#f2f2f2;--bs-table-striped-color:#000;--bs-table-border-color:#bbb;}
+}
