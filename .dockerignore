@@ -3,8 +3,9 @@
 .env
 .env.*
 .vscode
-/database
-README
 node_modules
+database
+README*
 test.php
 test_user.php
+dbcheck.php

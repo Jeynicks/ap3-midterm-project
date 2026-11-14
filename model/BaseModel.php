@@ -3,7 +3,8 @@
 abstract class BaseModel {
     protected string $table;
     protected string $pk;
-    protected array  $cols;          // columns the app may insert/update (whitelist)
+    protected array  $cols;              // columns the app may insert/update (whitelist)
+    protected bool   $audited = true;    // table has created_by / updated_by columns
 
     public function __construct(protected PDO $pdo) {}
 
@@ -13,17 +14,30 @@ abstract class BaseModel {
         return $s->fetch() ?: null;
     }
 
-    public function create(array $d): int {
-        $s = $this->pdo->prepare("INSERT INTO {$this->table} (" . implode(',', $this->cols) . ") VALUES (:"
-            . implode(',:', $this->cols) . ") RETURNING {$this->pk}");
-        $s->execute($this->pick($d));
+    // $by = user_id of the person making the change (recorded for auditing)
+    public function create(array $d, ?int $by = null): int {
+        $cols = $this->cols;
+        $params = $this->pick($d);
+        if ($this->audited) {
+            array_push($cols, 'created_by', 'updated_by');
+            $params[':created_by'] = $by;
+            $params[':updated_by'] = $by;
+        }
+        $s = $this->pdo->prepare("INSERT INTO {$this->table} (" . implode(',', $cols) . ") VALUES (:"
+            . implode(',:', $cols) . ") RETURNING {$this->pk}");
+        $s->execute($params);
         return (int)$s->fetchColumn();
     }
 
-    public function update(int $id, array $d): bool {
+    public function update(int $id, array $d, ?int $by = null): bool {
         $set = implode(',', array_map(fn($c) => "$c = :$c", $this->cols));
+        $params = $this->pick($d) + [':_id' => $id];
+        if ($this->audited) {
+            $set .= ', updated_by = :_by';
+            $params[':_by'] = $by;
+        }
         $s = $this->pdo->prepare("UPDATE {$this->table} SET $set WHERE {$this->pk} = :_id");
-        return $s->execute($this->pick($d) + [':_id' => $id]);
+        return $s->execute($params);
     }
 
     public function delete(int $id): bool {

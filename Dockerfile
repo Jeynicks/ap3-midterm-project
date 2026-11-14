@@ -6,6 +6,9 @@ RUN apt-get update \
     && docker-php-ext-install pdo_pgsql pgsql \
     && rm -rf /var/lib/apt/lists/*
 
+# Production PHP settings: errors go to the logs, never to the browser
+RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
 # Render tells the container which port to listen on via $PORT
 ENV PORT=10000
 RUN sed -i 's/Listen 80/Listen ${PORT}/' /etc/apache2/ports.conf \

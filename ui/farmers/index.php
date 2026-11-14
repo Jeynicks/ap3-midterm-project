@@ -71,7 +71,9 @@ require __DIR__ . '/../../includes/header.php';
           <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#viewModal"
                   data-name="<?= e($name) ?>" data-contact="<?= e($r['contact_number']) ?>"
                   data-location="<?= e($r['city_municipality'] . ', ' . $r['province']) ?>"
-                  data-registered="<?= e($r['date_registered']) ?>" data-updated="<?= e($r['updated_at']) ?>">View</button>
+                  data-registered="<?= e($r['date_registered']) ?>"
+                  data-created="<?= e(fmt_dt($r['created_at']) . ' by ' . ($r['created_by_name'] ?? 'not recorded')) ?>"
+                  data-updated="<?= e(fmt_dt($r['updated_at']) . ' by ' . ($r['updated_by_name'] ?? 'not recorded')) ?>">View</button>
           <a class="btn btn-sm btn-outline-secondary" href="/ui/farmers/form.php?id=<?= (int)$r['farmer_id'] ?>">Edit</a>
           <?php if (is_admin()): ?>
             <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
@@ -100,7 +102,7 @@ require __DIR__ . '/../../includes/header.php';
     <div class="modal-body"><dl class="detail-list mb-0">
       <dt>Name</dt><dd id="vName"></dd><dt>Contact number</dt><dd id="vContact"></dd>
       <dt>Location</dt><dd id="vLocation"></dd><dt>Registered</dt><dd id="vRegistered"></dd>
-      <dt>Last updated</dt><dd id="vUpdated" class="mb-0"></dd>
+      <dt>Created</dt><dd id="vCreated"></dd><dt>Last updated</dt><dd id="vUpdated" class="mb-0"></dd>
     </dl></div>
   </div></div>
 </div>
@@ -121,7 +123,7 @@ require __DIR__ . '/../../includes/header.php';
   document.getElementById('viewModal').addEventListener('show.bs.modal', ev => {
     const d = ev.relatedTarget.dataset;
     vName.textContent = d.name; vContact.textContent = d.contact; vLocation.textContent = d.location;
-    vRegistered.textContent = d.registered; vUpdated.textContent = d.updated;
+    vRegistered.textContent = d.registered; vCreated.textContent = d.created; vUpdated.textContent = d.updated;
   });
   document.getElementById('deleteModal').addEventListener('show.bs.modal', ev => {
     dName.textContent = ev.relatedTarget.dataset.name; dId.value = ev.relatedTarget.dataset.id;

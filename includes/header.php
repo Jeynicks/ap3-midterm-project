@@ -21,8 +21,12 @@
       <div class="collapse navbar-collapse" id="mainNav">
         <ul class="navbar-nav me-auto">
           <li class="nav-item"><a class="nav-link" href="/ui/dashboard.php">Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link" href="/ui/farmers/index.php">Farmers</a></li>
-          <!-- add Farms, Crops, Planting, Harvest, Reports here as each page is built -->
+          <?php // A link shows up automatically once its page exists, so there are never broken links.
+          foreach (['Farmers' => '/ui/farmers/index.php', 'Farms' => '/ui/farms/index.php', 'Crops' => '/ui/crops/index.php',
+                    'Planting' => '/ui/planting/index.php', 'Harvest' => '/ui/harvest/index.php', 'Reports' => '/ui/reports/index.php'] as $label => $path):
+            if (file_exists(__DIR__ . '/..' . $path)): ?>
+            <li class="nav-item"><a class="nav-link" href="<?= $path ?>"><?= $label ?></a></li>
+          <?php endif; endforeach; ?>
         </ul>
         <form method="post" action="/ui/logout.php" class="d-flex align-items-center gap-2 mt-2 mt-md-0">
           <span class="text-secondary small"><?= e($_SESSION['user']['full_name'] ?? '') ?> (<?= e($_SESSION['user']['role_name'] ?? '') ?>)</span>

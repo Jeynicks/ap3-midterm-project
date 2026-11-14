@@ -14,7 +14,7 @@ $record = $id ? $farmers->find($id) : null;
 if ($id && !$record) { flash_set('danger', 'That farmer no longer exists.'); header('Location: /ui/farmers/index.php'); exit; }
 
 $errors = [];
-$data   = $record ?? ['first_name' => '', 'last_name' => '', 'contact_number' => '', 'location_id' => 0];
+$data   = $record ?? ['first_name' => '', 'last_name' => '', 'contact_number' => '', 'location_id' => 0, 'date_registered' => date('Y-m-d')];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     [$errors, $data] = $ctl->save($id ?: null, $_POST);
     if (!$errors) { header('Location: /ui/farmers/index.php'); exit; }
@@ -42,11 +42,17 @@ require __DIR__ . '/../../includes/header.php';
       <input class="form-control<?= $bad('last_name') ?>" id="last_name" name="last_name" maxlength="50" value="<?= e($data['last_name']) ?>" required>
       <?= $msg('last_name') ?>
     </div>
-    <div class="col-12">
+    <div class="col-sm-6">
       <label class="form-label" for="contact_number">Contact number</label>
       <input class="form-control<?= $bad('contact_number') ?>" id="contact_number" name="contact_number" inputmode="numeric" maxlength="11"
              placeholder="09171234567" value="<?= e($data['contact_number']) ?>" required>
       <?= $msg('contact_number') ?>
+    </div>
+    <div class="col-sm-6">
+      <label class="form-label" for="date_registered">Date registered</label>
+      <input class="form-control<?= $bad('date_registered') ?>" id="date_registered" name="date_registered" type="date"
+             max="<?= date('Y-m-d') ?>" value="<?= e($data['date_registered']) ?>" required>
+      <?= $msg('date_registered') ?>
     </div>
     <div class="col-12">
       <label class="form-label" for="location_id">Location</label>

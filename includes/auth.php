@@ -47,3 +47,28 @@ function flash_render(): void {
     }
     unset($_SESSION['flash']);
 }
+
+// ---- paste at the bottom of includes/auth.php (after the first additions) ----
+
+date_default_timezone_set('Asia/Manila');   // so "today" matches the Philippines, not the server
+
+function current_user_id(): ?int {
+    return isset($_SESSION['user']['user_id']) ? (int)$_SESSION['user']['user_id'] : null;
+}
+
+function fmt_dt(?string $ts): string {       // database timestamp -> "Nov 14, 2026 3:05 PM"
+    if (!$ts) return '—';
+    return (new DateTime($ts))->setTimezone(new DateTimeZone('Asia/Manila'))->format('M j, Y g:i A');
+}
+
+// Any uncaught error: log the details privately, show users a generic page (no hosts, users or stack traces).
+set_exception_handler(function (Throwable $ex): void {
+    error_log($ex->getMessage());
+    if (!headers_sent()) http_response_code(500);
+    echo '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+       . '<title>Something went wrong</title>'
+       . '<body style="font-family:system-ui,sans-serif;background:#15151e;color:#fff;display:grid;place-items:center;min-height:100vh;margin:0">'
+       . '<div style="max-width:420px;padding:1.5rem"><h1>Something went wrong</h1>'
+       . '<p>The request could not be completed. Please try again in a moment.</p>'
+       . '<a style="color:#ff2a1f" href="/ui/dashboard.php">Back to the dashboard</a></div></body>';
+});

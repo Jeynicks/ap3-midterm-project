@@ -2,17 +2,21 @@
 class FarmerModel extends BaseModel {
     protected string $table = 'farmer';
     protected string $pk    = 'farmer_id';
-    protected array  $cols  = ['first_name', 'last_name', 'contact_number', 'location_id'];
+    protected array  $cols  = ['first_name', 'last_name', 'contact_number', 'location_id', 'date_registered'];
 
     private const SORT = ['id' => 'f.farmer_id', 'name' => 'f.last_name', 'city' => 'l.city_municipality', 'date' => 'f.date_registered'];
-    private const FROM = 'farmer f JOIN location l ON l.location_id = f.location_id';
+    private const FROM = 'farmer f
+        JOIN location l ON l.location_id = f.location_id
+        LEFT JOIN app_user cb ON cb.user_id = f.created_by
+        LEFT JOIN app_user ub ON ub.user_id = f.updated_by';
 
     public function paginate(string $q, int $locationId, string $sort, string $dir, int $page): array {
         $where = 'WHERE 1=1'; $p = [];
         if ($q !== '') { $where .= " AND (f.first_name || ' ' || f.last_name || ' ' || f.contact_number) ILIKE :q"; $p[':q'] = "%$q%"; }
         if ($locationId > 0) { $where .= ' AND f.location_id = :loc'; $p[':loc'] = $locationId; }
         $order = (self::SORT[$sort] ?? 'f.farmer_id') . ($dir === 'desc' ? ' DESC' : ' ASC');
-        return $this->page('f.*, l.city_municipality, l.province', self::FROM, $where, $p, $order, $page);
+        return $this->page('f.*, l.city_municipality, l.province, cb.full_name AS created_by_name, ub.full_name AS updated_by_name',
+            self::FROM, $where, $p, $order, $page);
     }
 
     // For dropdowns on other modules (Farms): [farmer_id => "Last, First"]
