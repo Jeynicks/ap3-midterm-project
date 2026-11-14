@@ -54,3 +54,8 @@ function delete_modal(string $noun, string $action = ''): void {
        . '<div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>'
        . '<button type="submit" class="btn btn-danger">Delete ' . e($noun) . '</button></div></form></div></div>';
 }
+
+function is_valid_date(string $s): bool {       // strict YYYY-MM-DD that is a real calendar date
+    $dt = DateTime::createFromFormat('Y-m-d', $s);
+    return $dt && $dt->format('Y-m-d') === $s;
+}

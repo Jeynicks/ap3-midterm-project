@@ -7,6 +7,9 @@ class LookupModel {
         'irrigation_type' => ['irrigation_type', 'irrigation_type_id', 'irrigation_type'],
         'crop_category'   => ['crop_category',   'category_id',        'category_name'],
         'growing_season'  => ['growing_season',  'season_id',          'season_name'],
+        'planting_status' => ['planting_status', 'status_id',          'status_name'],
+        'quality_grade'   => ['quality_grade',   'grade_id',           'grade_name'],
+        'harvest_remark'  => ['harvest_remark',  'remark_id',          'remark_description'],
     ];
 
     public function __construct(private PDO $pdo) {}

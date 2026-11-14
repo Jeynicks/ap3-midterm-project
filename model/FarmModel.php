@@ -22,4 +22,10 @@ class FarmModel extends BaseModel {
             cb.full_name AS created_by_name, ub.full_name AS updated_by_name",
             self::FROM, $where, $p, $order, $page);
     }
+
+    // For the Planting form: [farm_id => "Farm name (Farmer last name)"]
+    public function options(): array {
+        return $this->pdo->query("SELECT f.farm_id, f.farm_name || ' (' || fr.last_name || ')'
+            FROM farm f JOIN farmer fr ON fr.farmer_id = f.farmer_id ORDER BY 2")->fetchAll(PDO::FETCH_KEY_PAIR);
+    }
 }
