@@ -23,7 +23,7 @@
           <li class="nav-item"><a class="nav-link" href="/ui/dashboard.php">Dashboard</a></li>
           <?php // A link shows up automatically once its page exists, so there are never broken links.
           foreach (['Farmers' => '/ui/farmers/index.php', 'Farms' => '/ui/farms/index.php', 'Crops' => '/ui/crops/index.php',
-                    'Planting' => '/ui/planting/index.php', 'Harvest' => '/ui/harvest/index.php', 'Reports' => '/ui/reports/index.php'] as $label => $path):
+                    'Planting' => '/ui/planting/index.php', 'Harvest' => '/ui/harvest/index.php', 'Lookups' => '/ui/lookups/index.php', 'Reports' => '/ui/reports/index.php'] as $label => $path):
             if (file_exists(__DIR__ . '/..' . $path)): ?>
             <li class="nav-item"><a class="nav-link" href="<?= $path ?>"><?= $label ?></a></li>
           <?php endif; endforeach; ?>
